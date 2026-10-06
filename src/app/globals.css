@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-pixel: var(--font-pixel-src), monospace;
+  --font-term: var(--font-term-src), monospace;
+  --color-dex-red: #d8202c;
+  --color-dex-red-dark: #8f1018;
+  --color-dex-red-light: #f0505a;
+  --color-dex-screen: #9bbc0f;
+  --color-dex-screen-dark: #0f380f;
+  --color-dex-screen-mid: #306230;
+  --color-dex-screen-light: #8bac0f;
+  --color-dex-blue: #2a8fe8;
+  --color-dex-black: #1a1a1a;
+  --color-dex-cream: #f8f0d8;
+}
+
+html {
+  background: #7fd4ff;
+}
+
+body {
+  color: #1a1a1a;
+  font-family: var(--font-term-src), monospace;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Chunky pixel border: square corners notched out, drawn with box-shadow. */
+.px-box {
+  --px: 4px;
+  --px-color: #1a1a1a;
+  box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--px-color),
+    0 var(--px) 0 0 var(--px-color),
+    calc(var(--px) * -1) 0 0 0 var(--px-color),
+    var(--px) 0 0 0 var(--px-color);
+  margin: var(--px);
+}
+
+/* Inset bevel used on red casing panels. */
+.px-bevel {
+  box-shadow:
+    inset 4px 4px 0 0 rgba(255, 255, 255, 0.28),
+    inset -4px -4px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.px-press {
+  transition: transform 60ms steps(1);
+}
+.px-press:active {
+  transform: translateY(2px);
+}
+
+/* Game Boy LCD screen with scanlines. */
+.lcd {
+  background-color: var(--color-dex-screen);
+  color: var(--color-dex-screen-dark);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(15, 56, 15, 0.06) 0px,
+    rgba(15, 56, 15, 0.06) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.lcd ::selection {
+  background: var(--color-dex-screen-dark);
+  color: var(--color-dex-screen);
+}
+
+.lcd-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-dex-screen-mid) transparent;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.bob {
+  animation: bob 1.2s steps(2) infinite;
+}
+
+@keyframes dex-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.dex-pop {
+  animation: dex-pop 380ms steps(6) both;
+}
+
+@keyframes type-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.type-in {
+  animation: type-in 500ms steps(20) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blink,
+  .bob,
+  .dex-pop,
+  .type-in {
+    animation: none;
+  }
+}
+
+:focus-visible {
+  outline: 3px dashed #ffd84a;
+  outline-offset: 3px;
+}
